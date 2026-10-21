@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/xvsu/MCUproject/Balance-vehicle/build/Debug/cmake_install.cmake",
+		"/home/xvsu/MCUproject/Balance-vehicle/build/Debug/cmake/stm32cubemx/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

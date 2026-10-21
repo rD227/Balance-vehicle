@@ -1,0 +1,3 @@
+/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:13:13:PrintHelp	8	static
+/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:26:6:MotorTest_Init	8	static
+/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:35:6:MotorTest_Poll	24	static
