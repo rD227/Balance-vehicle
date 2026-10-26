@@ -30,9 +30,9 @@
 
 初始化代码由 CubeMX 生成在 `Core/Src/tim.c`、`i2c.c`、`usart.c`、`gpio.c`。引脚宏位于 `Core/Inc/main.h`。
 
-第一阶段应用位于 `App/motor.c`、`App/motor_test.c`：调用 `HAL_TIM_PWM_Start()` 启动 TIM1 CH1/CH2，上电保持 STBY 低；只有手动串口点动命令才使能驱动。接线、供电检查及测试方法见 [MOTOR_TEST.md](MOTOR_TEST.md)。
+第一阶段应用位于 `App/motor.c`、`App/motor_test.c`：调用 `HAL_TIM_PWM_Start()` 启动 TIM1 CH1/CH2，上电保持 STBY 低；默认仅手动串口点动命令使能驱动。当前命令行烧录、串口与万用表排查步骤见 [CLI_AND_MOTOR_DEBUG.md](CLI_AND_MOTOR_DEBUG.md)，接线原理见 [MOTOR_TEST.md](MOTOR_TEST.md)。
 
-编码器尚未调用 `HAL_TIM_Encoder_Start()`。MPU6050 驱动及 PID 尚未添加，未做实物功能验证。
+当前测试入口已调用 `HAL_TIM_Encoder_Start()`，但编码器尚未接线，输出仅为无有效测速意义的原始计数。MPU6050 驱动及 PID 尚未添加，未做实物功能验证。
 
 ## 命令行重新生成与构建
 

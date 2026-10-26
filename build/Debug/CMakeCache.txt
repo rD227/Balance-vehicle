@@ -123,6 +123,11 @@ CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 //Enable/Disable output of build database during the build.
 CMAKE_EXPORT_BUILD_DATABASE:BOOL=
 
+//Enable output of a compile_commands.json file listing the exact
+// compiler invocation for each translation unit. Implemented by
+// the Makefile and Ninja generators; ignored elsewhere.
+CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
+
 //Value Computed by CMake.
 CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=/home/xvsu/MCUproject/Balance-vehicle/build/Debug/CMakeFiles/pkgRedirects
 
@@ -232,7 +237,9 @@ CMAKE_STRIP:FILEPATH=/usr/sbin/arm-none-eabi-strip
 //Path to a program.
 CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 
-//The CMake toolchain file
+//Path to a CMake toolchain file, read early in the CMake run,
+// that specifies the compilers, toolchain utilities, and target-platform
+// information used when cross-compiling.
 CMAKE_TOOLCHAIN_FILE:FILEPATH=/home/xvsu/MCUproject/Balance-vehicle/cmake/gcc-arm-none-eabi.cmake
 
 //If this value is on, makefiles will be generated without the

@@ -1,5 +1,7 @@
 # 第一阶段：TB6612FNG 手动电机测试
 
+**当前 25% / 400ms 测试程序、命令行烧录、串口及万用表排查步骤见 [CLI_AND_MOTOR_DEBUG.md](CLI_AND_MOTOR_DEBUG.md)。本文件下文的 10% / 300ms 参数与测试结果是最初版本记录，不适用于当前应用。**
+
 当前 `.ioc` 与生成代码一致，无需修改引脚或重新生成。应用使用 C + HAL，无 RTOS。源码备份：`/tmp/balance-vehicle-backups/Balance-vehicle-20261021-211507-306520.tar.gz`（临时目录不保证长期保留）。
 
 ## 接线与供电核对

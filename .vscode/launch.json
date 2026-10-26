@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Balance-vehicle (ST-Link)",
+            "type": "cortex-debug",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/Debug/Balance-vehicle.elf",
+            "servertype": "stutil",
+            "interface": "swd",
+            "device": "STM32F103C8",
+            "armToolchainPath": "/usr/bin",
+            "gdbPath": "/usr/bin/gdb",
+            "runToEntryPoint": "main",
+            "preLaunchTask": "Build (Debug)"
+        }
+    ]
+}
