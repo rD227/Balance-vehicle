@@ -1,7 +1,7 @@
-/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:27:13:UartPrint	16	static
-/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:33:13:PrintHelp	8	static
-/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:51:13:PrintRightState	224	static
-/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:76:16:ControlPinsMatch	24	static
-/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:86:13:StartPulse	112	static
-/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:119:6:MotorTest_Init	8	static
-/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:143:6:MotorTest_Poll	200	static
+/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:26:13:UartPrint	16	static
+/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:32:13:PrintHelp	8	static
+/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:50:13:PrintRightState	224	static
+/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:75:16:ControlPinsMatch	24	static
+/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:85:13:StartPulse	112	static
+/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:123:6:MotorTest_Init	8	static
+/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c:140:6:MotorTest_Poll	192	static

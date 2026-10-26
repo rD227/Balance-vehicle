@@ -67,6 +67,12 @@
 },
 {
   "directory": "/home/xvsu/MCUproject/Balance-vehicle/build/Debug",
+  "command": "/usr/sbin/arm-none-eabi-gcc -DDEBUG -DSTM32F103xB -DUSE_HAL_DRIVER -I/home/xvsu/MCUproject/Balance-vehicle/App -I/home/xvsu/MCUproject/Balance-vehicle/cmake/stm32cubemx/../../Core/Inc -I/home/xvsu/MCUproject/Balance-vehicle/cmake/stm32cubemx/../../Drivers/STM32F1xx_HAL_Driver/Inc -I/home/xvsu/MCUproject/Balance-vehicle/cmake/stm32cubemx/../../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I/home/xvsu/MCUproject/Balance-vehicle/cmake/stm32cubemx/../../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I/home/xvsu/MCUproject/Balance-vehicle/cmake/stm32cubemx/../../Drivers/CMSIS/Include  -mcpu=cortex-m3  -Wall -fdata-sections -ffunction-sections -fstack-usage -O0 -g3 -std=gnu11 -o CMakeFiles/Balance-vehicle.dir/App/encoder.c.obj -c /home/xvsu/MCUproject/Balance-vehicle/App/encoder.c",
+  "file": "/home/xvsu/MCUproject/Balance-vehicle/App/encoder.c",
+  "output": "/home/xvsu/MCUproject/Balance-vehicle/build/Debug/CMakeFiles/Balance-vehicle.dir/App/encoder.c.obj"
+},
+{
+  "directory": "/home/xvsu/MCUproject/Balance-vehicle/build/Debug",
   "command": "/usr/sbin/arm-none-eabi-gcc -DDEBUG -DSTM32F103xB -DUSE_HAL_DRIVER -I/home/xvsu/MCUproject/Balance-vehicle/App -I/home/xvsu/MCUproject/Balance-vehicle/cmake/stm32cubemx/../../Core/Inc -I/home/xvsu/MCUproject/Balance-vehicle/cmake/stm32cubemx/../../Drivers/STM32F1xx_HAL_Driver/Inc -I/home/xvsu/MCUproject/Balance-vehicle/cmake/stm32cubemx/../../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I/home/xvsu/MCUproject/Balance-vehicle/cmake/stm32cubemx/../../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I/home/xvsu/MCUproject/Balance-vehicle/cmake/stm32cubemx/../../Drivers/CMSIS/Include  -mcpu=cortex-m3  -Wall -fdata-sections -ffunction-sections -fstack-usage -O0 -g3 -std=gnu11 -o CMakeFiles/Balance-vehicle.dir/App/motor_test.c.obj -c /home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c",
   "file": "/home/xvsu/MCUproject/Balance-vehicle/App/motor_test.c",
   "output": "/home/xvsu/MCUproject/Balance-vehicle/build/Debug/CMakeFiles/Balance-vehicle.dir/App/motor_test.c.obj"

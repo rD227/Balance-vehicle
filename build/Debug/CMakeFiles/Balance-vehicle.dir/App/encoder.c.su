@@ -1,0 +1,7 @@
+/home/xvsu/MCUproject/Balance-vehicle/App/encoder.c:7:27:GetTimer	16	static
+/home/xvsu/MCUproject/Balance-vehicle/App/encoder.c:12:19:Encoder_Init	8	static
+/home/xvsu/MCUproject/Balance-vehicle/App/encoder.c:25:9:Encoder_GetDelta	24	static
+/home/xvsu/MCUproject/Balance-vehicle/App/encoder.c:36:9:Encoder_GetTotal	24	static
+/home/xvsu/MCUproject/Balance-vehicle/App/encoder.c:42:10:Encoder_GetRawCounter	16	static
+/home/xvsu/MCUproject/Balance-vehicle/App/encoder.c:47:6:Encoder_Reset	24	static
+/home/xvsu/MCUproject/Balance-vehicle/App/encoder.c:55:6:Encoder_ResetAll	8	static

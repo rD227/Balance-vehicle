@@ -43,13 +43,13 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 65,
+				"line" : 66,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 52,
+				"line" : 53,
 				"parent" : 0
 			},
 			{
@@ -154,7 +154,8 @@
 				7,
 				8,
 				10,
-				11
+				11,
+				12
 			]
 		},
 		{
@@ -279,7 +280,8 @@
 				7,
 				8,
 				10,
-				11
+				11,
+				12
 			]
 		},
 		{
@@ -293,7 +295,6 @@
 			"name" : "Object Libraries",
 			"sourceIndexes" : 
 			[
-				12,
 				13,
 				14,
 				15,
@@ -308,7 +309,8 @@
 				24,
 				25,
 				26,
-				27
+				27,
+				28
 			]
 		}
 	],
@@ -422,6 +424,16 @@
 			],
 			"compileGroupIndex" : 0,
 			"path" : "App/motor.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"backtraces" : 
+			[
+				7
+			],
+			"compileGroupIndex" : 0,
+			"path" : "App/encoder.c",
 			"sourceGroupIndex" : 0
 		},
 		{

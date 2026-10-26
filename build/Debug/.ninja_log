@@ -28,3 +28,9 @@
 1610	1963	1792759653495605758	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c.obj	5dc37d2dd7dcabbe
 1805	2551	1792759653691608529	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c.obj	6cae5a18851dae15
 153	243	1792761950856714843	Balance-vehicle.elf	b96d8dfa1202c800
+1	54	1793014483144941918	build.ninja	49de045d1a714ee8
+1	54	1793014483144941918	/home/xvsu/MCUproject/Balance-vehicle/build/Debug/cmake_install.cmake	49de045d1a714ee8
+1	54	1793014483144941918	/home/xvsu/MCUproject/Balance-vehicle/build/Debug/cmake/stm32cubemx/cmake_install.cmake	49de045d1a714ee8
+1	339	1793014483155754136	CMakeFiles/Balance-vehicle.dir/App/encoder.c.obj	41a078c4b2400aaf
+1	346	1793014483157330997	CMakeFiles/Balance-vehicle.dir/App/motor_test.c.obj	870372642ad6ce5c
+346	494	1793014483500765833	Balance-vehicle.elf	dc4d7e41f5663d6c

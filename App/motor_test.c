@@ -1,12 +1,13 @@
 #include "motor_test.h"
 #include "motor.h"
+#include "encoder.h"
 #include "tim.h"
 #include "usart.h"
 #include <stdio.h>
 #include <string.h>
 
 #define TEST_PULSE_MS        400U
-#define METER_PULSE_MS      5000U /* t/T: unloaded output measurement only. */
+#define METER_PULSE_MS      5000U /* t/T: 5s run for meter/encoder testing. */
 #define TEST_REST_MS        1000U
 #define HEARTBEAT_MS        1000U
 #define TEST_BOOT_AUTORUN   0U
@@ -19,10 +20,8 @@ static uint32_t stopped_at;
 static uint32_t last_heartbeat_at;
 static uint8_t boot_seq_step;
 static uint32_t boot_seq_timer;
-static uint16_t prev_enc_l;
-static uint16_t prev_enc_r;
-static int32_t total_enc_l;
-static int32_t total_enc_r;
+static int32_t pulse_start_enc_r;
+static int32_t pulse_start_enc_l;
 
 static void UartPrint(const char *msg)
 {
@@ -86,6 +85,11 @@ static uint8_t ControlPinsMatch(MotorId motor, int16_t duty)
 static void StartPulse(MotorId motor, int16_t duty, uint32_t now, uint32_t duration_ms)
 {
     char buf[80];
+    (void)Encoder_GetDelta(MOTOR_LEFT);
+    (void)Encoder_GetDelta(MOTOR_RIGHT);
+    pulse_start_enc_l = Encoder_GetTotal(MOTOR_LEFT);
+    pulse_start_enc_r = Encoder_GetTotal(MOTOR_RIGHT);
+
     if (Motor_Enable() != HAL_OK || Motor_SetSpeed(motor, duty) != HAL_OK) {
         Motor_EmergencyStop();
         running = 0U;
@@ -124,18 +128,11 @@ void MotorTest_Init(void)
     last_heartbeat_at = stopped_at;
     boot_seq_step = TEST_BOOT_AUTORUN ? 0U : 2U;
     boot_seq_timer = stopped_at;
-    prev_enc_l = 0U;
-    prev_enc_r = 0U;
-    total_enc_l = 0;
-    total_enc_r = 0;
+    pulse_start_enc_l = 0;
+    pulse_start_enc_r = 0;
 
     Motor_EmergencyStop();
-
-    /* Start hardware quadrature encoder timers TIM2 (PA0/PA1) & TIM3 (PA6/PA7) */
-    (void)HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
-    (void)HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
-    __HAL_TIM_SET_COUNTER(&htim2, 0U);
-    __HAL_TIM_SET_COUNTER(&htim3, 0U);
+    (void)Encoder_Init();
 
     PrintHelp();
 }
@@ -148,12 +145,19 @@ void MotorTest_Poll(void)
     uint32_t now = HAL_GetTick();
     uint32_t duration_ms = TEST_PULSE_MS;
 
-    /* 1. Stop pulse when deadline expires */
+    /* 1. Stop pulse when deadline expires and print pulse encoder delta */
     if (running != 0U && (uint32_t)(now - started_at) >= active_pulse_ms) {
+        char buf[100];
         Motor_EmergencyStop();
         running = 0U;
         stopped_at = now;
-        UartPrint(">> STOP (pulse finished)\r\n");
+        (void)Encoder_GetDelta(MOTOR_LEFT);
+        (void)Encoder_GetDelta(MOTOR_RIGHT);
+        (void)snprintf(buf, sizeof(buf),
+                       ">> STOP (pulse finished) | Pulse EncB(PA6/7)=%+ld, EncA(PA0/1)=%+ld\r\n",
+                       (long)(Encoder_GetTotal(MOTOR_RIGHT) - pulse_start_enc_r),
+                       (long)(Encoder_GetTotal(MOTOR_LEFT) - pulse_start_enc_l));
+        UartPrint(buf);
     }
 
     /* 2. One-time automatic BO1/BO2 (MOTOR_RIGHT) motion test after boot:
@@ -173,26 +177,22 @@ void MotorTest_Poll(void)
         StartPulse(MOTOR_RIGHT, -(int16_t)test_duty, now, TEST_PULSE_MS);
     }
 
-    /* 3. Raw counts only: not calibrated RPM or a fixed-period speed sample. */
-    if (running == 0U && (uint32_t)(now - last_heartbeat_at) >= HEARTBEAT_MS) {
-        uint16_t cur_l = (uint16_t)__HAL_TIM_GET_COUNTER(&htim2);
-        uint16_t cur_r = (uint16_t)__HAL_TIM_GET_COUNTER(&htim3);
-        int16_t d_l = (int16_t)(cur_l - prev_enc_l);
-        int16_t d_r = (int16_t)(cur_r - prev_enc_r);
+    /* 3. Every 1s: sample B-port (PA6/PA7) and A-port (PA0/PA1) encoders */
+    if ((uint32_t)(now - last_heartbeat_at) >= HEARTBEAT_MS) {
+        int16_t d_l = Encoder_GetDelta(MOTOR_LEFT);
+        int16_t d_r = Encoder_GetDelta(MOTOR_RIGHT);
+        int32_t tot_l = Encoder_GetTotal(MOTOR_LEFT);
+        int32_t tot_r = Encoder_GetTotal(MOTOR_RIGHT);
         char buf[120];
 
-        prev_enc_l = cur_l;
-        prev_enc_r = cur_r;
-        total_enc_l += d_l;
-        total_enc_r += d_r;
         last_heartbeat_at = now;
 
         (void)snprintf(buf, sizeof(buf),
-                       "[%lus] Duty=%u%% | EncR raw: tot=%ld delta=%+d | EncL raw: tot=%ld delta=%+d\r\n",
+                       "[%lus] Duty=%u%% | EncB(PA6/7): tot=%ld spd=%+d/s | EncA(PA0/1): tot=%ld spd=%+d/s\r\n",
                        (unsigned long)(now / 1000U),
                        (unsigned int)(test_duty / 10U),
-                       (long)total_enc_r, (int)d_r,
-                       (long)total_enc_l, (int)d_l);
+                       (long)tot_r, (int)d_r,
+                       (long)tot_l, (int)d_l);
         UartPrint(buf);
     }
 
@@ -230,12 +230,7 @@ void MotorTest_Poll(void)
         return;
     }
     if (command == 'c' || command == 'C') {
-        __HAL_TIM_SET_COUNTER(&htim2, 0U);
-        __HAL_TIM_SET_COUNTER(&htim3, 0U);
-        prev_enc_l = 0U;
-        prev_enc_r = 0U;
-        total_enc_l = 0;
-        total_enc_r = 0;
+        Encoder_ResetAll();
         UartPrint(">> Encoder counts cleared to 0.\r\n");
         return;
     }
