@@ -10,6 +10,11 @@
  */
 HAL_StatusTypeDef Encoder_Init(void);
 
+/* Wheel-shaft counts per revolution (x4 quadrature), measured by hand-turning
+ * the wheel: ~1000. Refine by turning 10 revolutions and dividing by 10.
+ */
+#define ENCODER_COUNTS_PER_REV  1000
+
 /* Read signed count change since the last Encoder_GetDelta() call for this motor,
  * and accumulate into the 32-bit total position counter.
  */

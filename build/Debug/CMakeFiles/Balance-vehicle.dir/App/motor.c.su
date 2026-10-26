@@ -1,5 +1,0 @@
-/home/xvsu/MCUproject/Balance-vehicle/App/motor.c:8:13:Coast	16	static
-/home/xvsu/MCUproject/Balance-vehicle/App/motor.c:26:6:Motor_EmergencyStop	8	static
-/home/xvsu/MCUproject/Balance-vehicle/App/motor.c:41:19:Motor_Init	8	static
-/home/xvsu/MCUproject/Balance-vehicle/App/motor.c:57:19:Motor_Enable	8	static
-/home/xvsu/MCUproject/Balance-vehicle/App/motor.c:75:19:Motor_SetSpeed	40	static

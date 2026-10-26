@@ -49,7 +49,7 @@ static void PrintHelp(void)
 
 static void PrintRightState(void)
 {
-    char buf[160];
+    static char buf[160];
     (void)snprintf(buf, sizeof(buf),
                    ">> MCU: STBY=%u BIN1=%u BIN2=%u PSC=%lu ARR=%lu CCR2=%lu CEN=%u CH2=%u MOE=%u\r\n",
                    (unsigned int)HAL_GPIO_ReadPin(TB6612_STBY_GPIO_Port, TB6612_STBY_Pin),
@@ -84,7 +84,7 @@ static uint8_t ControlPinsMatch(MotorId motor, int16_t duty)
 
 static void StartPulse(MotorId motor, int16_t duty, uint32_t now, uint32_t duration_ms)
 {
-    char buf[80];
+    static char buf[80];
     (void)Encoder_GetDelta(MOTOR_LEFT);
     (void)Encoder_GetDelta(MOTOR_RIGHT);
     pulse_start_enc_l = Encoder_GetTotal(MOTOR_LEFT);
@@ -135,6 +135,23 @@ void MotorTest_Init(void)
     (void)Encoder_Init();
 
     PrintHelp();
+
+    /* Report why the MCU (re)started: a BOR/POR reset right after a motor
+     * command points to supply droop/noise, not to firmware blocking.
+     */
+    {
+        static char rst[96];
+        uint32_t csr = RCC->CSR;
+        (void)snprintf(rst, sizeof(rst),
+                       ">> BOOT reset cause:%s%s%s%s%s\r\n",
+                       (csr & RCC_CSR_PORRSTF)  ? " POWER(POR/BOR)" : "",
+                       (csr & RCC_CSR_PINRSTF)  ? " NRST-pin" : "",
+                       (csr & RCC_CSR_SFTRSTF)  ? " software" : "",
+                       (csr & RCC_CSR_IWDGRSTF) ? " IWDG" : "",
+                       (csr & RCC_CSR_LPWRRSTF) ? " low-power" : "");
+        UartPrint(rst);
+        RCC->CSR |= RCC_CSR_RMVF; /* clear flags for the next reset */
+    }
 }
 
 void MotorTest_Poll(void)
@@ -147,7 +164,7 @@ void MotorTest_Poll(void)
 
     /* 1. Stop pulse when deadline expires and print pulse encoder delta */
     if (running != 0U && (uint32_t)(now - started_at) >= active_pulse_ms) {
-        char buf[100];
+        static char buf[100];
         Motor_EmergencyStop();
         running = 0U;
         stopped_at = now;
@@ -183,16 +200,18 @@ void MotorTest_Poll(void)
         int16_t d_r = Encoder_GetDelta(MOTOR_RIGHT);
         int32_t tot_l = Encoder_GetTotal(MOTOR_LEFT);
         int32_t tot_r = Encoder_GetTotal(MOTOR_RIGHT);
-        char buf[120];
+        static char buf[120];
 
         last_heartbeat_at = now;
 
         (void)snprintf(buf, sizeof(buf),
-                       "[%lus] Duty=%u%% | EncB(PA6/7): tot=%ld spd=%+d/s | EncA(PA0/1): tot=%ld spd=%+d/s\r\n",
+                       "[%lus] Duty=%u%% | EncB(PA6/7): tot=%ld spd=%+d/s %+ldrpm | EncA(PA0/1): tot=%ld spd=%+d/s %+ldrpm\r\n",
                        (unsigned long)(now / 1000U),
                        (unsigned int)(test_duty / 10U),
                        (long)tot_r, (int)d_r,
-                       (long)tot_l, (int)d_l);
+                       (long)d_r * 60L / ENCODER_COUNTS_PER_REV,
+                       (long)tot_l, (int)d_l,
+                       (long)d_l * 60L / ENCODER_COUNTS_PER_REV);
         UartPrint(buf);
     }
 
@@ -235,7 +254,7 @@ void MotorTest_Poll(void)
         return;
     }
     if (command >= '1' && command <= '5') {
-        char buf[64];
+        static char buf[64];
         test_duty = (uint16_t)(command - '0') * 100U;
         (void)snprintf(buf, sizeof(buf), ">> Duty set to %u%%\r\n",
                        (unsigned int)(test_duty / 10U));
